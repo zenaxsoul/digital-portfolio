@@ -13,6 +13,8 @@
             --light-bg: #f8fafc; /* Màu nền sáng */
             --text-main: #334155;
             --sidebar-width: 280px;
+            --sidebar-bg: var(--primary-color);
+            --sidebar-text: #ffffff;
         }
 
         /* === THIẾT KẾ NỀN TẢNG === */
@@ -33,9 +35,14 @@
         body.dark-mode {
             --light-bg: #0f172a;
             --text-main: #cbd5e1;
+            --sidebar-bg: #0f172a;
+            --sidebar-text: #cbd5e1;
             background-color: var(--light-bg);
         }
-        body.dark-mode .sidebar { background-color: #0f172a; border-right: 1px solid #1e293b; }
+        body.dark-mode .sidebar { 
+            background-color: var(--sidebar-bg); 
+            border-right: 1px solid #1e293b; 
+        }
         body.dark-mode .main-content { background-color: #1e293b; color: #f1f5f9; }
         body.dark-mode .card { background-color: #0f172a; border: 1px solid #1e293b; }
         body.dark-mode .exercise-header { background-color: #1e293b; }
@@ -48,14 +55,14 @@
         .sidebar {
             width: var(--sidebar-width);
             height: 100vh;
-            background-color: var(--primary-color);
+            background-color: var(--sidebar-bg);
             position: fixed;
             top: 0;
             left: 0;
             padding: 25px;
             display: flex;
             flex-direction: column;
-            color: white;
+            color: var(--sidebar-text);
             box-shadow: 4px 0 10px rgba(0,0,0,0.05);
             z-index: 200;
         }
@@ -77,13 +84,14 @@
             margin-bottom: 10px;
             border: 2px solid var(--secondary-color);
         }
-        .sidebar h3 { margin: 0; font-size: 1.1em; }
-        .sidebar p { margin: 5px 0 0 0; font-size: 0.85em; opacity: 0.7; }
+        .sidebar h3 { margin: 0; font-size: 1.1em; color: inherit; }
+        .sidebar p { margin: 5px 0 0 0; font-size: 0.85em; opacity: 0.8; color: inherit; }
 
         .menu-btn {
             background: none;
             border: none;
-            color: #cbd5e1;
+            color: inherit;
+            opacity: 0.85;
             text-align: left;
             padding: 14px 18px;
             margin: 5px 0;
@@ -97,12 +105,13 @@
             width: 100%;
         }
         .menu-btn:hover {
-            color: white;
-            background-color: rgba(255,255,255,0.05);
+            opacity: 1;
+            background-color: rgba(255,255,255,0.1);
         }
         .menu-btn.active {
             background-color: var(--secondary-color);
             color: white;
+            opacity: 1;
             box-shadow: 0 4px 12px rgba(39, 174, 96, 0.3);
         }
 
@@ -122,12 +131,21 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             z-index: 150;
         }
+        .mobile-header h4 {
+            margin: 0;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
         .menu-toggle-btn {
             background: none;
             border: none;
             color: white;
             font-size: 1.5em;
             cursor: pointer;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         /* === KHÔNG GIAN HIỂN THỊ CHÍNH === */
@@ -284,6 +302,11 @@
                 width: 260px;
                 position: fixed;
                 transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                /* Ép chặt màu text luôn sáng trên mobile menu xanh */
+                color: white !important;
+            }
+            body.dark-mode .sidebar {
+                color: #cbd5e1 !important;
             }
             /* Thêm class open để kích hoạt hiệu ứng trượt ra từ góc trái */
             .sidebar.open {
@@ -328,17 +351,13 @@
 </head>
 <body>
 
-    <!-- Nút bấm & Tiêu đề cố định trên Điện thoại -->
     <div class="mobile-header">
         <button class="menu-toggle-btn" onclick="toggleMenu()">☰</button>
         <h4>Portfolio - Minh Quân</h4>
-        <div style="width: 24px;"></div> <!-- Tạo khoảng trống cân đối -->
-    </div>
+        <div style="width: 24px;"></div> </div>
 
-    <!-- Lớp phủ mờ nền khi bật Menu Mobile -->
     <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleMenu()"></div>
 
-    <!-- Thanh Sidebar điều hướng chính -->
     <div class="sidebar" id="sidebarMenu">
         <div class="profile-zone">
             <div class="profile-img">🎓</div>
@@ -360,7 +379,6 @@
 
         <div class="main-content">
 
-            <!-- TAB 1: GIỚI THIỆU -->
             <div id="introduction" class="tab-section active">
                 <div class="card">
                     <h2>I. Giới Thiệu Bản Thân</h2>
@@ -382,7 +400,6 @@
                 </div>
             </div>
 
-            <!-- TAB 2: DANH SÁCH DỰ ÁN -->
             <div id="projects" class="tab-section">
                 <div class="card">
                     <h2>II. Trang Dự Án (Hệ thống kết quả bài tập)</h2>
@@ -466,7 +483,6 @@
                 </div>
             </div>
 
-            <!-- TAB 3: TỔNG KẾT BÁO CÁO -->
             <div id="conclusion" class="tab-section">
                 <div class="card">
                     <h2>III. Báo Cáo Tổng Kết Hoạt Động Học Tập & Phát Triển Năng Lực Số</h2>
@@ -483,7 +499,7 @@
                     </ul>
 
                     <h3>3. Chiến lược vượt thách thức và Quản trị rủi ro công nghệ</h3>
-                    <p>Thách thức lớn nhất mà em đối mặt chính là việc quản lý thời gian trước áp lực khối lượng công việc lớn và rủi ro từ <strong>"sự ảo tưởng của AI" (AI Hallucination)</strong> khi nghiên cứu tài liệu học thuật. Để giải quyết triệt để, em đã áp dụng phương pháp quản trị dự án Agile, chia nhỏ các mục tiêu theo tuần và xây dựng <em>"Bộ lọc kiểm chứng chéo 3 lớp"</em> đối với mọi thông tin do AI tạo ra. Việc đối chiếu trực tiếp dữ liệu từ các nguồn tin cậy (.edu, Google Scholar) giúp sản phẩm của em đạt độ chính xác tối đa, đồng thời đảm bảo tính liêm chính học thuật tuyệt đối.</p>
+                    <p>Thách thức lớn nhất mà em đối mặt chính là việc quản lý thời gian trước áp lực khối lượng công việc lớn và rủi ro từ <strong>"sự ảo tưởng của AI" (AI Hallucination)</strong> khi nghiên cứu tài liệu học thuật. Để giải quyết triệt threats, em đã áp dụng phương pháp quản trị dự án Agile, chia nhỏ các mục tiêu theo tuần và xây dựng <em>"Bộ lọc kiểm chứng chéo 3 lớp"</em> đối với mọi thông tin do AI tạo ra. Việc đối chiếu trực tiếp dữ liệu từ các nguồn tin cậy (.edu, Google Scholar) giúp sản phẩm của em đạt độ chính xác tối đa, đồng thời đảm bảo tính liêm chính học thuật tuyệt đối.</p>
 
                     <h3>4. Tầm nhìn định hướng tương lai tại VNU - UET</h3>
                     <p>Sản phẩm Digital Portfolio đạt chuẩn xuất sắc này chính là minh chứng rõ ràng nhất cho năng lực tự học, tư duy phản biện và sự nghiêm túc của em đối với việc phát triển bản thân trong kỷ nguyên số 2026. Những kiến thức và kỹ năng từ học phần này sẽ là bệ phóng vững chắc, giúp em tự tin đón nhận các học phần chuyên sâu về Hệ thống nhúng, Kiến trúc máy tính và Trí tuệ nhân tạo tại trường Đại học Công nghệ - VNU trong thời gian tới.</p>
@@ -493,8 +509,7 @@
         </div>
 
         <footer>
-            <!-- Phần nội dung bản quyền cũ đã được xóa bỏ hoàn toàn -->
-        </footer>
+            </footer>
     </div>
 
     <script>
